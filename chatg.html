@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trek Bot - Your Travel Companion</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <img src="images/logo.png" alt="Trek Bot Logo" class="logo">
+            <h1>Trek Bot</h1>
+        </div>
+        <div class="chat-area" id="chatArea"></div>
+        <input type="text" id="userInput" class="input-field" placeholder="Type a message...">
+        <button onclick="sendMessage()" class="send-button">Send</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<style>body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.chat-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.chat-area {
+    height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.input-field {
+    width: calc(100% - 70px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.send-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
+
+/* Customizing the scrollbar */
+.chat-area::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-area::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+.chat-area::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+</style>
+<script>
+    class BotV4 {
+    constructor() {
+        this.knowledge = new Map();
+        this.knowledge.set("good morning", "good morning!");
+        this.knowledge.set("what is your name?", "Robby");
+        this.knowledge.set("good evening", "good evening!");
+        this.knowledge.set("need advice", "please ask!");
+        this.knowledge.set("follow a course", "ok...go on..");
+        this.knowledge.set("thank you", "you are welcome dear");
+    }
+
+    answer(question) {
+        for (let [key, value] of this.knowledge.entries()) {
+            if (key.includes(question.toLowerCase())) {
+                return value;
+            }
+            if (question.toLowerCase().includes("hi") || question.toLowerCase().includes("hello")) {
+                const responses = ["Hi!", "Hello!", "Hello Dear", "Hey, nice to see you"];
+                const randomIndex = Math.floor(Math.random() * responses.length);
+                return responses[randomIndex];
+            }
+            if (question.toLowerCase().includes("how are you")) {
+                const responses = ["I'm fine", "I am ok", "Not bad dear", "good", "Alright"];
+                const randomIndex = Math.floor(Math.random() * responses.length);
+                return responses[randomIndex];
+            }
+            if (question.toLowerCase().includes("courses")) {
+                return this.showCourses();
+            }
+            if (question.toLowerCase().includes("branches")) {
+                return this.showBranches();
+            }
+        }
+
+        return "Sorry, I don't understand.";
+    }
+
+    showCourses() {
+        return "Abc College Offers Following Courses:\nJava Programming\nWeb Development\nData Science";
+    }
+
+    showBranches() {
+        return "Branches:\nNew York\nLos Angeles\nChicago";
+    }
+
+    trainBot(question) {
+        return "You tell the answer please";
+    }
+}
+
+const chatbot = new BotV4();
+
+function sendMessage() {
+    var userInput = document.getElementById("userInput").value;
+    if (userInput.trim() !== "") {
+        appendToChatArea("You: " + userInput, true);
+        document.getElementById("userInput").value = "";
+
+        var response = chatbot.answer(userInput);
+        appendToChatArea("Chatbot: " + response, false);
+    }
+}
+
+function appendToChatArea(message, isUser) {
+    var chatArea = document.getElementById("chatArea");
+    var messageElement = document.createElement("div");
+    messageElement.className = isUser ? "user-message" : "bot-message";
+    messageElement.textContent = message;
+    chatArea.appendChild(messageElement);
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+</script>
